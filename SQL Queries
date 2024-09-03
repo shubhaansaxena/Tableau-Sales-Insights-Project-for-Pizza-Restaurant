@@ -1,0 +1,124 @@
+-- Total Revenue for 7 months
+SELECT SUM(ItemTotal) FROM Sales;
+
+-- Total Revenue by Month
+
+SELECT d.Month, SUM(ItemTotal) AS RevenueSum
+FROM Sales s
+LEFT JOIN DateDimension d
+ON s.DateID = d.DateID
+GROUP BY d.Month
+ORDER BY RevenueSum DESC;
+
+-- Total No. of Orders
+SELECT COUNT(DISTINCT InvoiceNo) FROM Sales;
+
+-- Total No.of Orders by Month
+SELECT d.Month, COUNT(DISTINCT InvoiceNo) AS CountOrders
+FROM Sales s
+LEFT JOIN DateDimension d
+ON s.DateID = d.DateID
+GROUP BY d.Month
+ORDER BY CountOrders DESC;
+
+SELECT d.Month, COUNT(DISTINCT InvoiceNo) AS CountOrders, SUM(ItemTotal) AS Revenue
+FROM Sales s
+LEFT JOIN DateDimension d
+ON s.DateID = d.DateID
+GROUP BY d.Month
+ORDER BY CountOrders DESC;
+
+-- Total Revenue and Orders by Day
+SELECT d.Weekday, COUNT(DISTINCT InvoiceNo) AS CountOrders, SUM(ItemTotal) AS Revenue, SUM(ItemTotal)/COUNT(DISTINCT InvoiceNo) AS RevenuePerOrder
+FROM Sales s
+LEFT JOIN DateDimension d
+ON s.DateID = d.DateID
+GROUP BY d.Weekday
+ORDER BY CountOrders DESC;
+
+-- Average Order Value for all 7 months
+SELECT AVG(OrderTotal)
+FROM 
+(
+SELECT DISTINCT InvoiceNo, OrderTotal 
+FROM Sales
+) AS data1
+;
+-- Average order value for June and July
+SELECT AVG(OrderTotal)
+FROM 
+(
+SELECT DISTINCT InvoiceNo, OrderTotal 
+FROM Sales s
+LEFT JOIN DateDimension d
+ON d.DateID = s.DateID
+WHERE d.Month >= 6
+) AS data1;
+
+-- Average order value from Jan-May
+SELECT AVG(OrderTotal)
+FROM 
+(
+SELECT DISTINCT InvoiceNo, OrderTotal 
+FROM Sales s
+LEFT JOIN DateDimension d
+ON d.DateID = s.DateID
+WHERE d.Month >= 1 AND d.Month <6
+) AS data1;
+
+-- Bestseller
+SELECT i.ItemName, COUNT(s.ItemID) AS OrderCount
+FROM Sales s
+JOIN ItemDimension i ON s.ItemID = i.ItemID
+JOIN DateDimension d ON d.DateID = s.DateID
+GROUP BY i.ItemName
+ORDER BY OrderCount DESC;
+
+-- Veg/Non-Veg
+SELECT i.Category_2, COUNT(s.ItemID) AS OrderCount, SUM(s.ItemTotal) AS Revenue
+FROM Sales s
+JOIN ItemDimension i ON s.ItemID = i.ItemID
+JOIN DateDimension d ON d.DateID = s.DateID
+GROUP BY i.Category_2
+ORDER BY OrderCount DESC;
+
+-- Category 1
+SELECT i.Category, COUNT(s.ItemID) AS OrderCount, SUM(s.ItemTotal) AS Revenue
+FROM Sales s
+JOIN ItemDimension i ON s.ItemID = i.ItemID
+JOIN DateDimension d ON d.DateID = s.DateID
+GROUP BY i.Category
+ORDER BY OrderCount DESC;
+
+-- 8 Inch or 11 Inch
+
+SELECT i.Variation, COUNT(s.ItemID) AS OrderCount, SUM(s.ItemTotal) AS Revenue
+FROM Sales s
+JOIN ItemDimension i ON s.ItemID = i.ItemID
+JOIN DateDimension d ON d.DateID = s.DateID
+WHERE i.Variation = '8 Inch' OR i.Variation = '11 Inch'
+GROUP BY i.Variation
+ORDER BY OrderCount DESC;
+
+SELECT c.CustomerID,c.CustomerName, COUNT(DISTINCT s.InvoiceNo) AS NumOrders
+FROM Sales s
+LEFT JOIN CustomerDimension c
+ON s.CustomerID = c.CustomerID
+GROUP BY c.CustomerID, c.CustomerName
+ORDER BY NumOrders DESC;
+
+-- OrderType - Dine in, zomato, swiggy
+SELECT o.SubOrderType, COUNT(DISTINCT s.InvoiceNo) AS NumOrders, SUM(ItemTotal) AS Revenue
+FROM Sales s
+JOIN OrderDimension o
+ON o.OrderTypeID = s.OrderTypeID
+WHERE o.SubOrderType = 'Dining' OR o.SubOrderType = 'PIZZA CUCINA - Swiggy' OR o.SubOrderType = 'Zomato'
+GROUP BY o.SubOrderType
+
+
+SELECT * FROM ItemDimension
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE ItemDimension
+SET Category_2 = 'Drinks'
+WHERE Category = 'Drinks' ;

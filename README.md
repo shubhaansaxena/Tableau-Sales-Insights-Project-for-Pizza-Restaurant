@@ -5,3 +5,8 @@ After doing so I performed an ETL on Jupyter by creating the required tables and
 I did some exploratory data analysis on MySQL and found some interesting insights for management.
 I connected MySQL to Tableau, and started creating attractive visualizations for the previously discovered insights. 
 Finally, I combined the most important graphs and created 2 dashboards.
+
+
+<img width="1013" alt="image" src="https://github.com/user-attachments/assets/907263b6-c7c5-42c1-8b5d-ddd24cbd3a56">
+
+<img width="1033" alt="image" src="https://github.com/user-attachments/assets/d7bac1ad-1986-4de9-b333-985e29ae0389">

@@ -1,4 +1,4 @@
-I reached out to a local pizzeria and asked management for some sales-related data so that I could analyze it and create some dashboards for them to effectively convey any insights. I started with cleaning the Excel spreadsheets manually by removing unnecessary columns and changing column names.
+I reached out to a local pizzeria and asked management for some sales-related data so that I could analyze it and create some dashboards for them to effectively convey any insights. I started by cleaning the Excel spreadsheets manually by removing unnecessary columns and changing column names.
 Then, I loaded them on Jupyter Notebook and used Python to merge and further clean the datasets.
 I wanted to use SQL to analyze the data, so I designed a star schema with a Sales Fact table and a Customer, Orders, Items, and Date dimension table.
 After doing so I performed an ETL on Jupyter by creating the required tables and loading them into MySQL.
